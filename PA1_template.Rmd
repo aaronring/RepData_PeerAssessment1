@@ -61,8 +61,19 @@ Imputing the missing data caused the median to increase & is now equal to the me
 
 ## Are there differences in activity patterns between weekdays and weekends?
 ```{r weekends}
-workday <-
+CleanActivity$date <- as.Date(CleanActivity$date, "%Y-%m-%d")
+CleanActivity$dayofweek <- weekdays(CleanActivity$date, abbreviate=FALSE)
 
+CleanActivity$workday <- ifelse(  CleanActivity$dayofweek == "Monday"
+                                | CleanActivity$dayofweek == "Tuesday"
+                                | CleanActivity$dayofweek == "Wednesday"
+                                | CleanActivity$dayofweek == "Thursday"
+                                | CleanActivity$dayofweek == "Friday"
+                                , "Weekday","Weekend")
+                                
+CleanActivity$workday <- as.factor(CleanActivity$workday)
 
+library(lattice)
+xyplot(steps ~ interval | workday, data = CleanActivity, layout = c(1, 2), type="l")        
 ```
 
