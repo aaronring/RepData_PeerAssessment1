@@ -8,18 +8,61 @@ output:
 
 ## Loading and preprocessing the data
 
+```{r loaddata}
+setwd("C:/Projects/Coursera/RepResearch/repdata-data-activity")
+activity <- read.csv("activity.csv", header=TRUE, sep=",")
+```
 
 
 ## What is mean total number of steps taken per day?
 
+```{r meansteps}
+dailyStepCount <- aggregate(steps ~ date , data = activity, sum, na.rm =TRUE)
+StepCounts <- hist(dailyStepCount$steps, xlab="Daily Step Count", main="")
+
+mean(dailyStepCount$steps)
+
+median(dailyStepCount$steps)
+
+```
+
 
 
 ## What is the average daily activity pattern?
+```{r daily}
+IntervalAvg <- aggregate(steps ~ interval, data = activity, FUN=mean)
 
+plot(IntervalAvg$interval, IntervalAvg$steps, type="l", xlab="Interval", ylab="Steps")
+
+IntervalAvg[IntervalAvg$steps== max(IntervalAvg$steps),]
+
+```
 
 
 ## Imputing missing values
+```{r missing}
+sum(is.na(activity$steps))
+sum(is.na(activity$date))
+sum(is.na(activity$interval))
 
 
+CleanActivity <- activity
+CleanActivity$steps[is.na(CleanActivity$steps)] <- mean(CleanActivity$steps, na.rm=TRUE)
+
+dailyStepClean <- aggregate(steps ~ date , data = CleanActivity, sum, na.rm =TRUE)
+StepCountsClean <- hist(dailyStepClean$steps, xlab="Daily Step Count", main="")
+
+mean(dailyStepClean$steps)
+
+median(dailyStepClean$steps)
+
+```
+Imputing the missing data caused the median to increase & is now equal to the mean.
 
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r weekends}
+workday <-
+
+
+```
+
